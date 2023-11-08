@@ -4,7 +4,7 @@ param (
     [string]$ProjectName = "test-repo-powershell-script",
     [string]$BranchName = "nln/test-hook/main",
     [string]$AzureDevOpsOrganizationBaseUrl = "https://nick-niverson.visualstudio.com",
-    [string[]]$excludedRepos = @("test-repo-powershell-script"),
+    [string[]]$ExcludedRepos = @("test-repo-powershell-script"),
     [hashtable[]]$ProcessingHooks = @(
         @{
             ScriptPath = ".\test-hook.ps1"
@@ -55,7 +55,7 @@ function Main {
         --organization $AzureDevOpsOrganizationBaseUrl `
         | ConvertFrom-Json
 
-    $excludedReposLower = $excludedRepos | ForEach-Object { $_.ToLower() }
+    $excludedReposLower = $ExcludedRepos | ForEach-Object { $_.ToLower() }
 
     foreach ($repo in $repos) {
         # skip any excluded repos
@@ -105,7 +105,7 @@ function Main {
                 ProjectName = $ProjectName
                 BranchName = $BranchName
                 AzureDevOpsOrganizationBaseUrl = $AzureDevOpsOrganizationBaseUrl
-                ExcludedRepos = $excludedRepos
+                ExcludedRepos = $ExcludedRepos
 
                 # general
                 ScriptRootPath = $PSScriptRoot
