@@ -3,6 +3,8 @@ param (
     [string]$WorkspaceRoot = "c:\code",
     [string]$ProjectName = "test-repo-powershell-script",
     [string]$BranchName = "nln/test-hook/main",
+    [string]$AzureDevOpsOrganizationBaseUrl = "https://nick-niverson.visualstudio.com",
+    [string[]]$excludedRepos = @("test-repo-powershell-script"),
     [hashtable[]]$ProcessingHooks = @(
         @{
             ScriptPath = ".\test-hook.ps1"
@@ -43,9 +45,7 @@ param (
             }
             CommitMessage = "testing regex hook"
         }
-    ),
-    [string]$AzureDevOpsOrganizationBaseUrl = "https://nick-niverson.visualstudio.com",
-    [string[]]$excludedRepos = @("test-repo-powershell-script")
+    )
 )
 
 function Main {
