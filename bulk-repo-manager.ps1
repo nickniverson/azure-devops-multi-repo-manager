@@ -148,22 +148,6 @@ function Main {
         Write-Host ""
         Write-Host ""
     }
-
-    # # Example invocation (to be adjusted with actual paths and logic)
-    # # .\MainScript.ps1 `
-    # # -repoRoot "C:\Code\Git" `
-    # # -projectName "MyProject" `
-    # # -branchName "feature/automated-update" `
-    # # -processingHooks @(
-    # #   @{ 
-    # #     ScriptPath = "RegexReplacementHook.ps1"; 
-    # #     Parameters = @{ repoPath = $null; newVersion = "2.0.0-2400.0601" } # repoPath will be set in the loop
-    # #   },
-    # #   @{ 
-    # #     ScriptPath = "FileCopyHook.ps1"; 
-    # #     Parameters = @{ repoPath = $null; sourceFilePath = "path\to\sourceFile.txt"; destinationRelativePath = "destination\path\within\repo\sourceFile.txt" } # repoPath will be set in the loop
-    # #   }
-    # # )
 }
 
 
