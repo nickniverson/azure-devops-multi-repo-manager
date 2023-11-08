@@ -6,45 +6,56 @@ param (
     [string]$AzureDevOpsOrganizationBaseUrl = "https://nick-niverson.visualstudio.com",
     [string[]]$ExcludedRepos = @("test-repo-powershell-script"),
     [hashtable[]]$ProcessingHooks = @(
+        # @{
+        #     ScriptPath = "git-status-hook.ps1"
+        # },
         @{
-            ScriptPath = ".\test-hook.ps1"
+            ScriptPath = "git-delete-branch-hook.ps1"
             Parameters = @{
-                Message = "hello world"
+                BranchToDelete = "nln/test-hook/main"
             }
-        },
-        @{
-            ScriptPath = "file-copy-hook.ps1"
-            Parameters = @{
-                SourceFilePath = Join-Path $PSScriptRoot "test.txt"
-                DestinationRelativePath = "test\test.txt"
-            }
-            CommitMessage = "add test/test.txt"
-        },
-        @{
-            ScriptPath = "file-copy-hook.ps1"
-            Parameters = @{
-                SourceFilePath = Join-Path $PSScriptRoot "test2.txt"
-                DestinationRelativePath = "test\test2.txt"
-            }
-            CommitMessage = "add test\test2.txt"
-        },
-        @{
-            ScriptPath = "file-copy-hook.ps1"
-            Parameters = @{
-                SourceFilePath = Join-Path $PSScriptRoot "test3.txt"
-                DestinationRelativePath = "test\test3.txt"
-            }
-            CommitMessage = "add test\test3.txt"
-        },
-        @{
-            ScriptPath = "regex-replacement-hook.ps1"
-            Parameters = @{
-                Filter = "*.txt"
-                Pattern = "test"
-                Replacement = "hello world"
-            }
-            CommitMessage = "testing regex hook"
+            SkipCommit = $true
         }
+        
+        # @{
+        #     ScriptPath = "test-hook.ps1"
+        #     Parameters = @{
+        #         Message = "hello world"
+        #     }
+        # },
+        # @{
+        #     ScriptPath = "file-copy-hook.ps1"
+        #     Parameters = @{
+        #         SourceFilePath = Join-Path $PSScriptRoot "test.txt"
+        #         DestinationRelativePath = "test\test.txt"
+        #     }
+        #     CommitMessage = "add test/test.txt"
+        # },
+        # @{
+        #     ScriptPath = "file-copy-hook.ps1"
+        #     Parameters = @{
+        #         SourceFilePath = Join-Path $PSScriptRoot "test2.txt"
+        #         DestinationRelativePath = "test\test2.txt"
+        #     }
+        #     CommitMessage = "add test\test2.txt"
+        # },
+        # @{
+        #     ScriptPath = "file-copy-hook.ps1"
+        #     Parameters = @{
+        #         SourceFilePath = Join-Path $PSScriptRoot "test3.txt"
+        #         DestinationRelativePath = "test\test3.txt"
+        #     }
+        #     CommitMessage = "add test\test3.txt"
+        # },
+        # @{
+        #     ScriptPath = "regex-replacement-hook.ps1"
+        #     Parameters = @{
+        #         Filter = "*.txt"
+        #         Pattern = "test"
+        #         Replacement = "hello world"
+        #     }
+        #     CommitMessage = "testing regex hook"
+        # }
     )
 )
 
@@ -82,11 +93,17 @@ function Main {
 
         Push-Location -Path $localRepoPath
 
+        # make sure local copy is up-to-date 
+        git fetch
+
+        $remoteBranchExists = (git ls-remote --heads origin $BranchName)
+        $localBranchExists = (git branch --list $BranchName)
+
         # checkout the branch if it already exists, else create it... 
-        if (git branch --list $BranchName) {
+        if ($localBranchExists -or $remoteBranchExists) {
             Write-Host "Branch '$BranchName' already exists in '$($repo.name)'...  switching to branch '$BranchName'..."
 
-            $currentBranch = git branch --show-current
+            $currentBranch = (git branch --show-current)
 
             if ($currentBranch -ne $BranchName) {
                 git checkout $BranchName
@@ -127,7 +144,7 @@ function Main {
             }
             
             # Stage, commit, and push changes
-            if (git status --porcelain) {
+            if ((-not $hook.SkipCommit) -and (git status --porcelain)) {
                 $commitMessage = "automated changes by bulk-repo-manager.ps1 script"
                 if ($hook.CommitMessage) {
                     $commitMessage = "bulk-repo-manager.ps1: $($hook.CommitMessage)"
