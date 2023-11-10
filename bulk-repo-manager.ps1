@@ -9,14 +9,13 @@ param (
         # @{
         #     ScriptPath = "git-status-hook.ps1"
         # },
-        @{
-            ScriptPath = "git-delete-branch-hook.ps1"
-            Parameters = @{
-                BranchToDelete = "nln/test-hook/main"
-            }
-            SkipCommit = $true
-        }
-        
+        # @{
+        #     ScriptPath = "git-delete-branch-hook.ps1"
+        #     Parameters = @{
+        #         BranchToDelete = "nln/test-hook/main"
+        #     }
+        #     SkipCommit = $true
+        # }
         # @{
         #     ScriptPath = "test-hook.ps1"
         #     Parameters = @{
@@ -26,10 +25,18 @@ param (
         # @{
         #     ScriptPath = "file-copy-hook.ps1"
         #     Parameters = @{
-        #         SourceFilePath = Join-Path $PSScriptRoot "test.txt"
-        #         DestinationRelativePath = "test\test.txt"
+        #         SourceFilePath = Join-Path $PSScriptRoot "test1.txt"
+        #         DestinationRelativePath = "test1.txt"
         #     }
-        #     CommitMessage = "add test/test.txt"
+        #     CommitMessage = "add test1.txt"
+        # },
+        # @{
+        #     ScriptPath = "file-copy-hook.ps1"
+        #     Parameters = @{
+        #         SourceFilePath = Join-Path $PSScriptRoot "test1.txt"
+        #         DestinationRelativePath = "test\test1.txt"
+        #     }
+        #     CommitMessage = "add test\test1.txt"
         # },
         # @{
         #     ScriptPath = "file-copy-hook.ps1"
@@ -46,11 +53,11 @@ param (
         #         DestinationRelativePath = "test\test3.txt"
         #     }
         #     CommitMessage = "add test\test3.txt"
-        # },
+        # }
         # @{
         #     ScriptPath = "regex-replacement-hook.ps1"
         #     Parameters = @{
-        #         Filter = "*.txt"
+        #         Filter = "test1.txt"
         #         Pattern = "test"
         #         Replacement = "hello world"
         #     }
