@@ -9,6 +9,8 @@ if ($Context.CurrentHook.Parameters.Filter) {
 $files = Get-ChildItem -Path $Context.CurrentLocalRepoPath -Recurse -Filter $filter
 
 foreach ($file in $files) {
+    Write-Host "regex-replacement-hook - processing file:  $($file.FullName)" -ForegroundColor Green
+
     $originalFileContent = (Get-Content -Path $file.FullName)
 
     $modifiedFileContent = $originalFileContent -replace $($Context.CurrentHook.Parameters.Pattern), $($Context.CurrentHook.Parameters.Replacement)
