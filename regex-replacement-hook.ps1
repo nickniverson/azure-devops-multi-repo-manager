@@ -13,7 +13,7 @@ $files = Get-ChildItem -Path $Context.CurrentLocalRepoPath -Recurse -Filter $fil
 foreach ($file in $files) {
     Write-Verbose "regex-replacement-hook - processing file:  $($file.FullName)"
 
-    $originalFileContent = (Get-Content -Path $file.FullName)
+    $originalFileContent = (Get-Content -Path $file.FullName -Raw)
 
     # skip empty files
     if ([string]::IsNullOrWhiteSpace($originalFileContent)) {
@@ -26,7 +26,7 @@ foreach ($file in $files) {
         continue
     }   
 
-    $modifiedFileContent | Set-Content -Path $file.FullName
+    $modifiedFileContent | Set-Content -Path $file.FullName -NoNewline
 
     Write-Verbose "regex-replacement-hook - processing file:  $($file.FullName)" -ForegroundColor Green
 }
