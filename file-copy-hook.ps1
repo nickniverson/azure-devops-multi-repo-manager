@@ -35,7 +35,7 @@ function Main {
         -Destination $destinationFilePath `
         -Force
 
-    Display "File copied from '$($Context.CurrentHook.Parameters.SourceFilePath)' to '$destinationFilePath'" -ForegroundColor Green
+    Display "File copied from '$($Context.CurrentHook.Parameters.SourceFilePath)' to '$destinationFilePath'"
 }
 
 
@@ -49,7 +49,7 @@ function Display-Error {
 function Display {
     param ([string]$message)
     
-    Write-Host (Format $message)
+    Write-Host (Format $message) -ForegroundColor Green
 }
 
 
