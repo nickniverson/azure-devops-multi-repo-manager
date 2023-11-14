@@ -1,5 +1,5 @@
 param ([hashtable]$Context)
 
-Write-Host "executing command:  terraform fmt $($Context.CurrentLocalRepoPath) -recursive" -ForegroundColor Green
+Write-Host "executing command:  terraform fmt -recursive $($Context.CurrentLocalRepoPath)" -ForegroundColor Green
 
-terraform fmt $Context.CurrentLocalRepoPath -recursive
+terraform fmt -recursive $Context.CurrentLocalRepoPath
