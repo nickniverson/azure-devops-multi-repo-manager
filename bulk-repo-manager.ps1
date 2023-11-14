@@ -7,22 +7,26 @@ param (
     [string[]]$ExcludedRepos = @("test-repo-powershell-script"),
     [hashtable[]]$ProcessingHooks = @(
         # @{
+        #     DisplayName = "git: status"
         #     ScriptPath = "git-status-hook.ps1"
         # },
         # @{
+        #     DisplayName = "git: delete branch"
         #     ScriptPath = "git-delete-branch-hook.ps1"
         #     Parameters = @{
         #         BranchToDelete = "nln/test-hook/main"
         #     }
         #     SkipCommit = $true
-        # }
+        # },
         # @{
+        #     DisplayName = "test hook"
         #     ScriptPath = "test-hook.ps1"
         #     Parameters = @{
         #         Message = "hello world"
         #     }
         # },
         # @{
+        #     DisplayName = "copy test1.txt to root folder"
         #     ScriptPath = "file-copy-hook.ps1"
         #     Parameters = @{
         #         SourceFilePath = Join-Path $PSScriptRoot "test1.txt"
@@ -31,6 +35,7 @@ param (
         #     CommitMessage = "add test1.txt"
         # },
         # @{
+        #     DisplayName = "copy test1.txt to sub folder"
         #     ScriptPath = "file-copy-hook.ps1"
         #     Parameters = @{
         #         SourceFilePath = Join-Path $PSScriptRoot "test1.txt"
@@ -39,6 +44,7 @@ param (
         #     CommitMessage = "add test\test1.txt"
         # },
         # @{
+        #     DisplayName = "copy test2.txt to sub folder"
         #     ScriptPath = "file-copy-hook.ps1"
         #     Parameters = @{
         #         SourceFilePath = Join-Path $PSScriptRoot "test2.txt"
@@ -47,14 +53,16 @@ param (
         #     CommitMessage = "add test\test2.txt"
         # },
         # @{
+        #     DisplayName = "copy test3.txt to sub folder"
         #     ScriptPath = "file-copy-hook.ps1"
         #     Parameters = @{
         #         SourceFilePath = Join-Path $PSScriptRoot "test3.txt"
         #         DestinationRelativePath = "test\test3.txt"
         #     }
         #     CommitMessage = "add test\test3.txt"
-        # }
+        # },
         # @{
+        #     DisplayName = "replace 'test' with 'hello world'"
         #     ScriptPath = "regex-replacement-hook.ps1"
         #     Parameters = @{
         #         Filter = "test1.txt"
