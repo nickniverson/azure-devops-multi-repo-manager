@@ -4,7 +4,7 @@ param (
     [string]$ProjectName = "test-repo-powershell-script",
     [string]$BranchName = "nln/test-hook/main",
     [string]$AzureDevOpsOrganizationBaseUrl = "https://nick-niverson.visualstudio.com",
-    [string[]]$ExcludedRepos = @("test-repo-powershell-script"),
+    [string[]]$IncludedRepos = @("repo-1", "repo-2", "repo-3"),
     [hashtable[]]$ProcessingHooks = @(
         # @{
         #     DisplayName = "git: status"
@@ -81,14 +81,14 @@ function Main {
         --organization $AzureDevOpsOrganizationBaseUrl `
         | ConvertFrom-Json
 
-    $excludedReposLower = $ExcludedRepos | ForEach-Object { $_.ToLower() }
+    $includedReposLower = $IncludedRepos | ForEach-Object { $_.ToLower() }
 
     foreach ($repo in $repos) {
         # skip any excluded repos
-        if ($repo.name.ToLower() -in $excludedReposLower) {
-            Write-Warning "Skipping excluded repository: '$($repo.name)'"
-            Write-Host ""
-            Write-Host ""
+        if ($repo.name.ToLower() -notin $includedReposLower) {
+            Write-Verbose "Skipping excluded repository: '$($repo.name)'"
+            Write-Verbose ""
+            Write-Verbose ""
 
             continue
         }
@@ -129,6 +129,8 @@ function Main {
             git push --set-upstream origin $BranchName
         }
 
+        $pushChanges = $false
+
         # Invoke processing hooks
         foreach ($hook in $ProcessingHooks) {
             $context = [ordered]@{
@@ -167,16 +169,19 @@ function Main {
 
                 git add .
                 git commit -m $commitMessage
-                git push
+
+                # if any processing hook commits changes, then we need to push
+                $pushChanges = $true
             }
         }
 
-        #     # Placeholder for actual pull request creation
-        #     Write-Host "Creating pull request for $BranchName in $($repo.name)..."
+        if ($pushChanges){
+            git push
+        }
 
         Pop-Location
 
-        # blank line for readability
+        # blank lines for readability
         Write-Host ""
         Write-Host ""
     }
