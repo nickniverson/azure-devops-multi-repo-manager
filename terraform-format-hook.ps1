@@ -1,5 +1,13 @@
 param ([hashtable]$Context)
 
-Write-Host "executing command:  terraform fmt -recursive $($Context.CurrentLocalRepoPath)" -ForegroundColor Green
+function Main {
+    Write-Host "processing hook:  $($Context.CurrentHook.DisplayName)" 
 
-terraform fmt -recursive $Context.CurrentLocalRepoPath
+    Write-Host "executing command:  terraform fmt -recursive $($Context.CurrentLocalRepoPath)" -ForegroundColor Green
+    
+    terraform fmt -recursive $Context.CurrentLocalRepoPath
+}
+
+
+# call main
+Main

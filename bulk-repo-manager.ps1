@@ -74,6 +74,7 @@ param (
     )
 )
 
+
 function Main {
     # Get list of repositories
     $repos = az repos list `

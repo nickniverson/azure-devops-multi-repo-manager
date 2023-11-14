@@ -1,5 +1,14 @@
 param ([hashtable]$Context)
 
-Write-Host "executing command: git status" -ForegroundColor Green
 
-git status
+function Main {
+    Write-Host "processing hook:  $($Context.CurrentHook.DisplayName)" 
+
+    Write-Host "executing command: git status" -ForegroundColor Green
+    
+    git status
+}
+
+
+# call main
+Main

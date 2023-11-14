@@ -2,6 +2,8 @@ param ([hashtable]$Context)
 
 
 function Main {
+    Write-Host "processing hook:  $($Context.CurrentHook.DisplayName)" 
+
     if (!(Test-Path -Path $Context.CurrentHook.Parameters.SourceFilePath)) {
         Display-Error "Source file does not exist: $($Context.CurrentHook.Parameters.SourceFilePath)"
 
