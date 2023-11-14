@@ -28,5 +28,5 @@ foreach ($file in $files) {
 
     $modifiedFileContent | Set-Content -Path $file.FullName -NoNewline
 
-    Write-Verbose "regex-replacement-hook - processing file:  $($file.FullName)" -ForegroundColor Green
+    Write-Verbose "regex-replacement-hook - processed file:  $($file.FullName)" -ForegroundColor Green
 }
